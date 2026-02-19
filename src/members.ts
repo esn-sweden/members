@@ -1,10 +1,10 @@
 import Personnummer from 'personnummer';
 
 export function countMembers(app: HTMLElement) {
-    app.innerHTML = `
+  app.innerHTML = `
 <div class="mb-3">
   <label for="pnInput" class="form-label">
-    Paste a list of the personal identity numbers (personnummer) of your members below:
+    Paste your members' personal identity numbers (personnummer) below:
   </label>
   <textarea id="pnInput" class="form-control mb-3" rows="6" placeholder="One personal number per line">
 </textarea>
@@ -13,7 +13,7 @@ export function countMembers(app: HTMLElement) {
     <div class="card-body p-3">
 
       <div class="d-flex justify-content-between py-2 border-bottom">
-        <span>Total Members</span>
+        <span>Total members</span>
         <strong id="totalCount">0</strong>
       </div>
 
@@ -33,7 +33,7 @@ export function countMembers(app: HTMLElement) {
       </div>
 
       <div class="d-flex justify-content-between py-2">
-        <span>Invalid Personal Identity Numbers</span>
+        <span>Invalid personal identity numbers</span>
         <strong id="invalidCount">0</strong>
       </div>
 
@@ -43,7 +43,7 @@ export function countMembers(app: HTMLElement) {
   <div id="invalidContainer" class="card alert alert-danger border-0 mt-3 d-none">
     <div class="card-body">
       <h6 class="text-danger fw-semibold mb-3">
-        Invalid Personal Identity Numbers
+        Invalid personal identity numbers
       </h6>
       <ul id="invalidList"></ul>
     </div>
@@ -51,61 +51,61 @@ export function countMembers(app: HTMLElement) {
 </div>
   `;
 
-    const input = app.querySelector<HTMLTextAreaElement>("#pnInput")!;
-    const totalEl = app.querySelector<HTMLSpanElement>("#totalCount")!;
-    const menEl = app.querySelector<HTMLSpanElement>("#menCount")!;
-    const womenEl = app.querySelector<HTMLSpanElement>("#womenCount")!;
-    const under26El = app.querySelector<HTMLSpanElement>("#under26Count")!;
-    const invalidEl = app.querySelector<HTMLSpanElement>("#invalidCount")!;
-    const invalidContainer = app.querySelector<HTMLDivElement>("#invalidContainer")!;
-    const invalidList = app.querySelector<HTMLUListElement>("#invalidList")!;
+  const input = app.querySelector<HTMLTextAreaElement>("#pnInput")!;
+  const totalEl = app.querySelector<HTMLSpanElement>("#totalCount")!;
+  const menEl = app.querySelector<HTMLSpanElement>("#menCount")!;
+  const womenEl = app.querySelector<HTMLSpanElement>("#womenCount")!;
+  const under26El = app.querySelector<HTMLSpanElement>("#under26Count")!;
+  const invalidEl = app.querySelector<HTMLSpanElement>("#invalidCount")!;
+  const invalidContainer = app.querySelector<HTMLDivElement>("#invalidContainer")!;
+  const invalidList = app.querySelector<HTMLUListElement>("#invalidList")!;
 
-    input.addEventListener("input", () => {
-        const lines = input.value
-            .split(/\r?\n/)
-            .map(l => l.trim())
-            .filter(l => l.length > 0);
+  input.addEventListener("input", () => {
+    const lines = input.value
+      .split(/\r?\n/)
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
 
-        let total = 0;
-        let men = 0;
-        let women = 0;
-        let under26 = 0;
-        let invalid = 0;
-        let invalidPn: string[] = [];
+    let total = 0;
+    let men = 0;
+    let women = 0;
+    let under26 = 0;
+    let invalid = 0;
+    let invalidPn: string[] = [];
 
-        for (const line of lines) {
-            // Personnummer does not work for temporary number with letters e.g. T or R by default
-            const normPn = line.replace(/[A-Za-z]/, "1");
+    for (const line of lines) {
+      // Personnummer does not work for temporary number with letters e.g. T or R by default
+      const normPn = line.replace(/[A-Za-z]/, "1");
 
-            if (!Personnummer.valid(normPn)) {
-                invalid++;
-                invalidPn.push(line);
-                continue;
-            }
+      if (!Personnummer.valid(normPn)) {
+        invalid++;
+        invalidPn.push(line);
+        continue;
+      }
 
-            total++;
+      total++;
 
-            const pn = Personnummer.parse(normPn);
-            if (pn.isMale()) men++;
-            if (pn.isFemale()) women++;
-            if (pn.getAge() < 26) under26++;
+      const pn = Personnummer.parse(normPn);
+      if (pn.isMale()) men++;
+      if (pn.isFemale()) women++;
+      if (pn.getAge() < 26) under26++;
 
-        }
+    }
 
-        totalEl.textContent = String(total);
-        menEl.textContent = String(men);
-        womenEl.textContent = String(women);
-        under26El.textContent = String(under26);
-        invalidEl.textContent = String(invalid);
+    totalEl.textContent = String(total);
+    menEl.textContent = String(men);
+    womenEl.textContent = String(women);
+    under26El.textContent = String(under26);
+    invalidEl.textContent = String(invalid);
 
 
-        invalidList.innerHTML = "";
-        for (const num of invalidPn) {
-            const li = document.createElement("li");
-            li.textContent = num;
-            invalidList.appendChild(li);
-        }
+    invalidList.innerHTML = "";
+    for (const num of invalidPn) {
+      const li = document.createElement("li");
+      li.textContent = num;
+      invalidList.appendChild(li);
+    }
 
-        invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
-    });
+    invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
+  });
 }

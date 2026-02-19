@@ -8,13 +8,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <div class="container py-5">
   <img src="${esnSwedenLogo}" class="d-block mx-auto img-fluid pb-4" style="max-width: 160px;" alt="ESN Sweden logo">
 
-  <h1>Member Statistics</h1>
+  <h1>Membership Statistics</h1>
 
 
   <div id="membersContent"></div>
 
   <p class="text-muted small mt-4 text-center">
-    All calculations are made in-browser. No data is sent to ESN Sweden.
+    All processing is done in the browser. No data is sent to ESN Sweden.
   </p>
 </div>
 `
