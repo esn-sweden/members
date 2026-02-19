@@ -9,34 +9,30 @@ export function countMembers(app: HTMLElement) {
   <textarea id="pnInput" class="form-control mb-3" rows="6" placeholder="One personal number per line">
 </textarea>
 
-  <div class="card bg-light border-0 mb-3">
-    <div class="card-body p-3">
+  <div class="d-flex flex-wrap gap-3">
+    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
+      <div class="h6">Total members</div>
+      <div class="h2" id="totalCount">0</div>
+    </div>
 
-      <div class="d-flex justify-content-between py-2 border-bottom">
-        <span>Total members</span>
-        <strong id="totalCount">0</strong>
-      </div>
+    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
+      <div class="h6">Women</div>
+      <div class="h2" id="womenCount">0</div>
+    </div>
 
-      <div class="d-flex justify-content-between py-2 border-bottom">
-        <span>Men</span>
-        <strong id="menCount">0</strong>
-      </div>
+    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
+      <div class="h6">Men</div>
+      <div class="h2" id="menCount">0</div>
+    </div>
 
-      <div class="d-flex justify-content-between py-2 border-bottom">
-        <span>Women</span>
-        <strong id="womenCount">0</strong>
-      </div>
+    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
+      <div class="h6">Under 26</div>
+      <div class="h2" id="under26Count">0</div>
+    </div>
 
-      <div class="d-flex justify-content-between py-2 border-bottom">
-        <span>Under 26</span>
-        <strong id="under26Count">0</strong>
-      </div>
-
-      <div class="d-flex justify-content-between py-2">
-        <span>Invalid personal identity numbers</span>
-        <strong id="invalidCount">0</strong>
-      </div>
-
+    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
+      <div class="h6">Invalid personal identity numbers</div>
+      <div class="h2" id="invalidCount">0</div>
     </div>
   </div>
 
@@ -53,8 +49,8 @@ export function countMembers(app: HTMLElement) {
 
   const input = app.querySelector<HTMLTextAreaElement>("#pnInput")!;
   const totalEl = app.querySelector<HTMLSpanElement>("#totalCount")!;
-  const menEl = app.querySelector<HTMLSpanElement>("#menCount")!;
   const womenEl = app.querySelector<HTMLSpanElement>("#womenCount")!;
+  const menEl = app.querySelector<HTMLSpanElement>("#menCount")!;
   const under26El = app.querySelector<HTMLSpanElement>("#under26Count")!;
   const invalidEl = app.querySelector<HTMLSpanElement>("#invalidCount")!;
   const invalidContainer = app.querySelector<HTMLDivElement>("#invalidContainer")!;
@@ -67,8 +63,8 @@ export function countMembers(app: HTMLElement) {
       .filter(l => l.length > 0);
 
     let total = 0;
-    let men = 0;
     let women = 0;
+    let men = 0;
     let under26 = 0;
     let invalid = 0;
     let invalidPn: string[] = [];
@@ -86,15 +82,15 @@ export function countMembers(app: HTMLElement) {
       total++;
 
       const pn = Personnummer.parse(normPn);
-      if (pn.isMale()) men++;
       if (pn.isFemale()) women++;
+      if (pn.isMale()) men++;
       if (pn.getAge() < 26) under26++;
 
     }
 
     totalEl.textContent = String(total);
-    menEl.textContent = String(men);
     womenEl.textContent = String(women);
+    menEl.textContent = String(men);
     under26El.textContent = String(under26);
     invalidEl.textContent = String(invalid);
 
