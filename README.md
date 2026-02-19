@@ -1,3 +1,3 @@
-# ESN Sweden Members
+# Membership Statistics
 
-A tool to get member information from a list of personal identification numbers.
+Get basic statistics about your members from their personal identity numbers.
