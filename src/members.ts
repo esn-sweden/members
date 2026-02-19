@@ -70,7 +70,7 @@ export function countMembers(app: HTMLElement) {
     let invalidPn: string[] = [];
 
     for (const line of lines) {
-      // Personnummer does not work for temporary number with letters e.g. T or R by default
+      // Personnummer does not work for temporary identifiers with letters e.g. T or R by default
       const normPn = line.replace(/[A-Za-z]/, "1");
 
       if (!Personnummer.valid(normPn)) {
