@@ -1,27 +1,40 @@
 import './styles.scss'
-import 'bootstrap';
 import Personnummer from 'personnummer';
 import * as XLSX from "xlsx";
 
-const input = document.querySelector<HTMLTextAreaElement>("#pnInput")!;
+type Person = {
+    pn: string;
+    name: string;
+}
+
+// input
+const textInput = document.querySelector<HTMLTextAreaElement>("#pnInput")!;
+const fileInput = document.querySelector<HTMLInputElement>("#fileInput")!;
+
+// stats
 const totalEl = document.querySelector<HTMLSpanElement>("#totalCount")!;
 const womenEl = document.querySelector<HTMLSpanElement>("#womenCount")!;
 const menEl = document.querySelector<HTMLSpanElement>("#menCount")!;
 const under26El = document.querySelector<HTMLSpanElement>("#under26Count")!;
 const invalidEl = document.querySelector<HTMLSpanElement>("#invalidCount")!;
+
+// invalid numbers
 const invalidContainer = document.querySelector<HTMLDivElement>("#invalidContainer")!;
 const invalidList = document.querySelector<HTMLUListElement>("#invalidList")!;
-const fileInput = document.querySelector<HTMLInputElement>("#fileInput")!;
 
-input.addEventListener("input", () => {
-    const pns = input.value
+
+textInput.addEventListener("input", handleTextInput);
+fileInput.addEventListener("change", handleFileAsync);
+
+function handleTextInput() {
+    const persons: Person[] = textInput.value
         .split(/\r?\n/)
         .map(l => l.trim())
-        .filter(l => l.length > 0);
-    updateStats(pns);
-});
+        .filter(l => l.length > 0).map(pn => ({ pn, name: "" }));
 
-fileInput.addEventListener("change", handleFileAsync);
+    fileInput.value = ""; // clear file input
+    updateStats(persons);
+}
 
 async function handleFileAsync(e: Event) {
     const input = e.target as HTMLInputElement
@@ -36,17 +49,21 @@ async function handleFileAsync(e: Event) {
     range.s.r = 5 // there are 5 rows before the headers
     sheet['!ref'] = XLSX.utils.encode_range(range);
     const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: "" }).slice(5);
-    console.log(rows);
     if (rows.length === 0 || !("Personnummer" in (rows[0]))) {
         window.alert("Column Personnummer not found")
     }
 
-    const pns = rows.map(r => r["Personnummer"]).filter(Boolean);
-    updateStats(pns);
+    const persons: Person[] = rows.map(r => ({
+        pn: r["Personnummer"],
+        name: `${(r["Förnamn"]) ?? ""} ${(r["Efternamn"]) ?? ""}`.trim()
+    }));
+
+    textInput.value = "" // clear textbox input
+    updateStats(persons);
 }
 
 
-function updateStats(lines: string[]) {
+function updateStats(persons: Person[]) {
     let total = 0;
     let women = 0;
     let men = 0;
@@ -54,13 +71,13 @@ function updateStats(lines: string[]) {
     let invalid = 0;
     let invalidPn: string[] = [];
 
-    for (const line of lines) {
+    for (const person of persons) {
         // Personnummer does not work for temporary identifiers with letters e.g. T or R by default
-        const normPn = line.replace(/[A-Za-z]/, "1");
+        const normPn = person.pn.replace(/[A-Za-z]/, "1");
 
         if (!Personnummer.valid(normPn)) {
             invalid++;
-            invalidPn.push(line);
+            invalidPn.push(`${person.pn}${person.name ? ` (${person.name})` : ""}`);
             continue;
         }
 
@@ -79,13 +96,6 @@ function updateStats(lines: string[]) {
     under26El.textContent = String(under26);
     invalidEl.textContent = String(invalid);
 
-
-    invalidList.innerHTML = "";
-    for (const num of invalidPn) {
-        const li = document.createElement("li");
-        li.textContent = num;
-        invalidList.appendChild(li);
-    }
-
+    invalidList.innerHTML = invalidPn.map(num => `<li>${num}</li>`).join("");
     invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
 }
