@@ -1,60 +1,14 @@
 import Personnummer from 'personnummer';
 
-export function countMembers(app: HTMLElement) {
-  app.innerHTML = `
-<div class="mb-3">
-  <label for="pnInput" class="form-label">
-    Paste your members' personal identity numbers (personnummer) below:
-  </label>
-  <textarea id="pnInput" class="form-control mb-3" rows="6" placeholder="One personal number per line">
-</textarea>
-
-  <div class="d-flex flex-wrap gap-3">
-    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-      <div class="h6">Total members</div>
-      <div class="h2" id="totalCount">0</div>
-    </div>
-
-    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-      <div class="h6">Women</div>
-      <div class="h2" id="womenCount">0</div>
-    </div>
-
-    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-      <div class="h6">Men</div>
-      <div class="h2" id="menCount">0</div>
-    </div>
-
-    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-      <div class="h6">Under 26</div>
-      <div class="h2" id="under26Count">0</div>
-    </div>
-
-    <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-      <div class="h6">Invalid personal identity numbers</div>
-      <div class="h2" id="invalidCount">0</div>
-    </div>
-  </div>
-
-  <div id="invalidContainer" class="card alert alert-danger border-0 mt-3 d-none">
-    <div class="card-body">
-      <h6 class="text-danger fw-semibold mb-3">
-        Invalid personal identity numbers
-      </h6>
-      <ul id="invalidList"></ul>
-    </div>
-  </div>
-</div>
-  `;
-
-  const input = app.querySelector<HTMLTextAreaElement>("#pnInput")!;
-  const totalEl = app.querySelector<HTMLSpanElement>("#totalCount")!;
-  const womenEl = app.querySelector<HTMLSpanElement>("#womenCount")!;
-  const menEl = app.querySelector<HTMLSpanElement>("#menCount")!;
-  const under26El = app.querySelector<HTMLSpanElement>("#under26Count")!;
-  const invalidEl = app.querySelector<HTMLSpanElement>("#invalidCount")!;
-  const invalidContainer = app.querySelector<HTMLDivElement>("#invalidContainer")!;
-  const invalidList = app.querySelector<HTMLUListElement>("#invalidList")!;
+export function countMembers() {
+  const input = document.querySelector<HTMLTextAreaElement>("#pnInput")!;
+  const totalEl = document.querySelector<HTMLSpanElement>("#totalCount")!;
+  const womenEl = document.querySelector<HTMLSpanElement>("#womenCount")!;
+  const menEl = document.querySelector<HTMLSpanElement>("#menCount")!;
+  const under26El = document.querySelector<HTMLSpanElement>("#under26Count")!;
+  const invalidEl = document.querySelector<HTMLSpanElement>("#invalidCount")!;
+  const invalidContainer = document.querySelector<HTMLDivElement>("#invalidContainer")!;
+  const invalidList = document.querySelector<HTMLUListElement>("#invalidList")!;
 
   input.addEventListener("input", () => {
     const lines = input.value
