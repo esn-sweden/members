@@ -1,4 +1,5 @@
 import Personnummer from 'personnummer';
+import * as XLSX from "xlsx";
 
 export function countMembers() {
   const input = document.querySelector<HTMLTextAreaElement>("#pnInput")!;
@@ -9,13 +10,42 @@ export function countMembers() {
   const invalidEl = document.querySelector<HTMLSpanElement>("#invalidCount")!;
   const invalidContainer = document.querySelector<HTMLDivElement>("#invalidContainer")!;
   const invalidList = document.querySelector<HTMLUListElement>("#invalidList")!;
+  const fileInput = document.querySelector<HTMLInputElement>("#fileInput")!;
 
   input.addEventListener("input", () => {
-    const lines = input.value
+    const pns = input.value
       .split(/\r?\n/)
       .map(l => l.trim())
       .filter(l => l.length > 0);
+    updateStats(pns);
+  });
 
+  fileInput.addEventListener("change", handleFileAsync);
+
+  async function handleFileAsync(e: Event) {
+    const input = e.target as HTMLInputElement
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const data = await file.arrayBuffer();
+    const workbook = XLSX.read(data);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    const range = XLSX.utils.decode_range(sheet['!ref']!);
+    range.s.r = 5 // there are 5 rows before the headers
+    sheet['!ref'] = XLSX.utils.encode_range(range);
+    const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: "" }).slice(5);
+    console.log(rows);
+    if (rows.length === 0 || !("Personnummer" in (rows[0]))) {
+      window.alert("Column Personnummer not found")
+    }
+
+    const pns = rows.map(r => r["Personnummer"]).filter(Boolean);
+    updateStats(pns);
+  }
+
+
+  function updateStats(lines: string[]) {
     let total = 0;
     let women = 0;
     let men = 0;
@@ -57,5 +87,5 @@ export function countMembers() {
     }
 
     invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
-  });
+  }
 }

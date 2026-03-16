@@ -17,6 +17,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
-    "personnummer": "^3.2.1"
+    "personnummer": "^3.2.1",
+    "xlsx": "^0.18.5"
   }
 }
