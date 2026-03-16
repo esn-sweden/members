@@ -111,6 +111,6 @@ function updateStats(persons: Person[]) {
     under26El.textContent = String(under26);
     invalidEl.textContent = String(invalid);
 
-    invalidList.replaceChildren(invalidPn.map(num => `<li>${num}</li>`).join(""));
+    invalidList.innerHTML = invalidPn.map(num => `<li>${num}</li>`).join("");
     invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
 }
