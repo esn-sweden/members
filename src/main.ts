@@ -33,6 +33,7 @@ function handleTextInput() {
         .filter(l => l.length > 0).map(pn => ({ pn, name: "" }));
 
     fileInput.value = ""; // clear file input
+    fileInput.classList.remove("is-invalid");
     updateStats(persons);
 }
 
@@ -50,7 +51,9 @@ async function handleFileAsync(e: Event) {
     sheet['!ref'] = XLSX.utils.encode_range(range);
     const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: "" }).slice(5);
     if (rows.length === 0 || !("Personnummer" in (rows[0]))) {
-        window.alert("Column Personnummer not found")
+        fileInput.classList.add("is-invalid");
+    } else {
+        fileInput.classList.remove("is-invalid");
     }
 
     const persons: Person[] = rows.map(r => ({
