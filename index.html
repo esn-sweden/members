@@ -1,83 +1,111 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/esn-star.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Membership Statistics</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container py-5">
+      <h1>Membership Statistics</h1>
 
-
-        <h1>Membership Statistics</h1>
-
+      <div class="mb-3">
         <div class="mb-3">
-            <div class="mb-3">
-                <label for="fileInput" class="form-label">
-                    Upload an Excel file of members from <a href="https://hitclub.hitract.se/hitMembers/">Hitract</a>:
-                </label>
-                <input id="fileInput" type="file" accept=".xlsx,.xls" class="form-control mb-3" />
-                <div id="fileError" class="invalid-feedback">
-
-                </div>
-            </div>
-
-            <label for="pnInput" class="form-label">
-                Or paste your members' personal identity numbers (personnummer) below:
-            </label>
-            <textarea id="pnInput" class="form-control mb-3" rows="6"
-                placeholder="One personal number per line"></textarea>
-
-            <div class="d-flex flex-wrap gap-3">
-                <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-                    <div class="h6">Total members</div>
-                    <p class="text-muted small">with valid personal identity number</p>
-                    <div class="h2" id="totalCount">0</div>
-                </div>
-
-                <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-                    <div class="h6">Women</div>
-                    <div class="h2" id="womenCount">0</div>
-                </div>
-
-                <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-                    <div class="h6">Men</div>
-                    <div class="h2" id="menCount">0</div>
-                </div>
-
-                <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-                    <div class="h6">Under 26</div>
-                    <div class="h2" id="under26Count">0</div>
-                </div>
-
-                <div class="card text-center p-3 flex-fill bg-light border-0" style="min-width: 150px;">
-                    <div class="h6">Invalid personal identity numbers</div>
-                    <div class="h2" id="invalidCount">0</div>
-                </div>
-            </div>
-
-            <div id="invalidContainer" class="card alert alert-danger border-0 mt-3 d-none">
-                <div class="card-body">
-                    <h6 class="text-danger fw-semibold mb-3">
-                        Invalid personal identity numbers
-                    </h6>
-                    <ul id="invalidList"></ul>
-                </div>
-            </div>
+          <label for="fileInput" class="form-label">
+            Upload an Excel file of members from
+            <a href="https://hitclub.hitract.se/hitMembers/">Hitract</a>:
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            accept=".xlsx,.xls"
+            class="form-control mb-3"
+          />
+          <div id="fileError" class="invalid-feedback"></div>
         </div>
 
-        <img src="esn-sweden.png" class="d-block mx-auto img-fluid pt-5" style="max-width: 160px;"
-            alt="ESN Sweden logo">
+        <label for="pnInput" class="form-label">
+          Or paste your members' personal identity numbers (personnummer) below:
+        </label>
+        <textarea
+          id="pnInput"
+          class="form-control mb-3"
+          rows="6"
+          placeholder="One personal number per line"
+        ></textarea>
 
-        <p class="text-muted small mt-4 text-center">
-            All processing is done in the browser. No data is sent to ESN Sweden. <a
-                href="https://github.com/esn-sweden/members" class="text-muted">Sourcecode</a>.
-        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <div
+            class="card text-center p-3 flex-fill bg-light border-0"
+            style="min-width: 150px"
+          >
+            <div class="h6">Total members</div>
+            <p class="text-muted small">with valid personal identity number</p>
+            <div class="h2" id="totalCount">0</div>
+          </div>
+
+          <div
+            class="card text-center p-3 flex-fill bg-light border-0"
+            style="min-width: 150px"
+          >
+            <div class="h6">Women</div>
+            <div class="h2" id="womenCount">0</div>
+          </div>
+
+          <div
+            class="card text-center p-3 flex-fill bg-light border-0"
+            style="min-width: 150px"
+          >
+            <div class="h6">Men</div>
+            <div class="h2" id="menCount">0</div>
+          </div>
+
+          <div
+            class="card text-center p-3 flex-fill bg-light border-0"
+            style="min-width: 150px"
+          >
+            <div class="h6">Under 26</div>
+            <div class="h2" id="under26Count">0</div>
+          </div>
+
+          <div
+            class="card text-center p-3 flex-fill bg-light border-0"
+            style="min-width: 150px"
+          >
+            <div class="h6">Invalid personal identity numbers</div>
+            <div class="h2" id="invalidCount">0</div>
+          </div>
+        </div>
+
+        <div
+          id="invalidContainer"
+          class="card alert alert-danger border-0 mt-3 d-none"
+        >
+          <div class="card-body">
+            <h6 class="text-danger fw-semibold mb-3">
+              Invalid personal identity numbers
+            </h6>
+            <ul id="invalidList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <img
+        src="esn-sweden.png"
+        class="d-block mx-auto img-fluid pt-5"
+        style="max-width: 160px"
+        alt="ESN Sweden logo"
+      />
+
+      <p class="text-muted small mt-4 text-center">
+        All processing is done in the browser. No data is sent to ESN Sweden.
+        <a href="https://github.com/esn-sweden/members" class="text-muted"
+          >Sourcecode</a
+        >.
+      </p>
     </div>
     <script type="module" src="/src/main.ts"></script>
-</body>
-
+  </body>
 </html>
