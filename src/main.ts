@@ -111,6 +111,11 @@ function updateStats(persons: Person[]) {
     under26El.textContent = String(under26);
     invalidEl.textContent = String(invalid);
 
-    invalidList.innerHTML = invalidPn.map(num => `<li>${num}</li>`).join("");
+    invalidList.innerHTML = "";
+    for (const pn of invalidPn) {
+        const bullet = document.createElement("li");
+        bullet.textContent = pn;
+        invalidList.appendChild(bullet)
+    }
     invalidContainer.classList.toggle("d-none", invalidPn.length === 0);
 }
